@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Canvas, extend } from "@react-three/fiber";
+// import { OrbitControls } from "@react-three/drei";
+// import { OrbitControls, TransformControls } from 'three-stdlib'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// import { OrbitControls } from 'three-stdlib/controls/OrbitControls'
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-function App() {
+// extend({ OrbitControls })
+
+const Box = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <mesh>
+      <boxGeometry args={[2, 2, 2]} />
+      <meshStandardMaterial />
+    </mesh>
+  );
+};
+
+export const App = () => {
+  return (
+    <div className="canvas-container">
+      <Canvas>
+        {/* <orbitControls /> */}
+        {/* <OrbitControls enableDamping /> */}
+        <ambientLight intesnsity={0.1} />
+        <directionalLight position={[0, 0, 5]} color={"red"} />
+        <Box />
+      </Canvas>
     </div>
   );
-}
+};
 
 export default App;
