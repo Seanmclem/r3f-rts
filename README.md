@@ -4,6 +4,6 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 
 ## To-dos
 
-- [ ] Teleporting villager
+- [x] Teleporting villager
 - [ ] better camera
 - [ ] walking villager
