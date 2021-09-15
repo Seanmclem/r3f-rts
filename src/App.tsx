@@ -87,6 +87,7 @@ const CameraControls = () => {
   useFrame(
     (state) => controls?.current?.update() && controls?.current?.update()
   );
+  // camera.position = {}
   return (
     <orbitControls
       ref={controls}
@@ -108,7 +109,11 @@ export const App = () => {
   } as Vector3);
   return (
     <div className="canvas-container">
-      <Canvas style={{ height: window.innerHeight, width: window.innerWidth }}>
+      <Canvas
+        style={{ height: window.innerHeight, width: window.innerWidth }}
+        camera={{ fov: 75, position: [10, 8, 10] }}
+        // camera={{ position: { x: 10, y: 10, z: 10 } as Vector3 }}
+      >
         <CameraControls />
         <Stars />
         <ambientLight intensity={0.5} />
