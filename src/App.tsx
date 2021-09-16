@@ -61,11 +61,14 @@ const Plane = ({
   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const handleClick = (event: any) => {
-    const points: Vector3 = event.intersections[0].point;
-    console.log({ points });
-
-    setPosition(points);
     debugger;
+    if (event.type === "click") {
+      setSelectedNodeUid(undefined);
+      console.log("Left click");
+    } else if (event.type === "contextmenu") {
+      const points: Vector3 = event.intersections[0].point;
+      setPosition(points);
+    }
   };
 
   return (
@@ -73,7 +76,7 @@ const Plane = ({
       position={[0, 0, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[1, 1, 1]}
-      // onClick={() => null}
+      // onClick={handleClick}
       onContextMenu={handleClick}
     >
       <planeBufferGeometry args={[100, 100]} />
