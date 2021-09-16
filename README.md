@@ -6,5 +6,9 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 
 - [x] Teleporting villager
 - [x] better camera
+- [ ] Villager management
+  - [ ] create by click on TC
+  - [x] listing
+  - [ ] selecting
 - [ ] Walking villager
 - [ ] Resources Hud (Top)
