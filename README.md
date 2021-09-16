@@ -9,6 +9,6 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 - [ ] Villager management
   - [ ] create by click on TC
   - [x] listing
-  - [ ] selecting
+  - [x] selecting
 - [ ] Walking villager
 - [ ] Resources Hud (Top)

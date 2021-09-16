@@ -27,26 +27,39 @@ declare global {
 extend({ OrbitControls });
 
 const Box = ({
+  villager,
   position,
-  selectedNode,
-  setSelectedNode,
+  selectedNodeUid,
+  setSelectedNodeUid,
 }: {
+  villager: VillagerProps;
   position: Vector3;
-  selectedNode?: string;
-  setSelectedNode: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedNodeUid?: string;
+  setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const size = 2;
   console.log({ position });
 
+  const selected = villager.uid === selectedNodeUid;
+
   return (
-    <mesh position={[position.x as number, size / 2 + 0.0001, position.z]}>
+    <mesh
+      position={[position.x as number, size / 2 + 0.0001, position.z]}
+      onClick={() => setSelectedNodeUid(villager.uid)}
+    >
       <boxGeometry args={[size, size, size]} />
-      <meshLambertMaterial color={"hotpink"} />
+      <meshBasicMaterial color={selected ? "blue" : "gray"} />
     </mesh>
   );
 };
 
-const Plane = ({ setPosition }: { setPosition: any }) => {
+const Plane = ({
+  setPosition,
+  setSelectedNodeUid,
+}: {
+  setPosition: (position: Vector3) => void;
+  setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) => {
   const handleClick = (event: any) => {
     const points: Vector3 = event.intersections[0].point;
     console.log({ points });
@@ -60,6 +73,7 @@ const Plane = ({ setPosition }: { setPosition: any }) => {
       position={[0, 0, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[1, 1, 1]}
+      // onClick={() => null}
       onContextMenu={handleClick}
     >
       <planeBufferGeometry args={[100, 100]} />
@@ -97,30 +111,33 @@ const CameraControls = () => {
   );
 };
 
-interface BoxProps {
+interface VillagerProps {
   uid: string;
   position: Vector3;
 }
 
-const box1: BoxProps = {
+const box1: VillagerProps = {
   uid: "fddsfsdfdsf",
   position: new Vector3(9, 0, 0),
 };
 
-export const App = () => {
-  const [villagers, setVillagers] = useState<BoxProps[]>([box1]);
-  const [selectedNode, setSelectedNode] = useState<string | undefined>(
-    box1.uid
-  );
+const box2: VillagerProps = {
+  uid: "f1234567dfdsf",
+  position: new Vector3(1, 0, 0),
+};
 
-  // const [selectedNodes, setSelectedNodes] = useState<any[]>([]);
+export const App = () => {
+  const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
+  const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
+
+  // const [selectedNodeUids, setSelectedNodeUids] = useState<any[]>([]);
 
   const handleSetPositions = (position: Vector3) => {
     const newVillager = [...villagers].find(
-      (villager) => villager.uid === selectedNode
+      (villager) => villager.uid === selectedNodeUid
     );
     const oldVillagers = villagers.filter(
-      (villager) => villager.uid !== selectedNode
+      (villager) => villager.uid !== selectedNodeUid
     );
     if (newVillager) {
       newVillager.position = position;
@@ -142,13 +159,17 @@ export const App = () => {
         {villagers.map((villager) => (
           <Box
             key={villager.uid}
+            villager={villager}
             position={villager.position}
-            selectedNode={selectedNode}
-            setSelectedNode={setSelectedNode}
+            selectedNodeUid={selectedNodeUid}
+            setSelectedNodeUid={setSelectedNodeUid}
           />
         ))}
 
-        <Plane setPosition={handleSetPositions} />
+        <Plane
+          setSelectedNodeUid={setSelectedNodeUid}
+          setPosition={handleSetPositions}
+        />
       </Canvas>
     </div>
   );
