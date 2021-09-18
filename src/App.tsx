@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { DoubleSide, Vector3 } from "three";
 import { VillagerProps } from "./components/villager/shared/types";
-import { box1, box2, Villager } from "./components/villager/Villager";
+import { box1, box2, VillagerComponent } from "./components/villager/Villager";
 import { BuildingProps } from "./components/buildings/shared/types";
 import { townCenter1 } from "./components/buildings/TownCenter";
 
@@ -55,7 +55,7 @@ const Plane = ({
       position={[0, 0, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[1, 1, 1]}
-      // onClick={handleClick}
+      onClick={handleClick}
       onContextMenu={handleClick}
     >
       <planeBufferGeometry args={[100, 100]} />
@@ -126,7 +126,7 @@ export const App = () => {
         <directionalLight position={[10, 15, 10]} color={"red"} />
 
         {villagers.map((villager) => (
-          <Villager
+          <VillagerComponent
             key={villager.uid}
             villager={villager}
             position={villager.position}

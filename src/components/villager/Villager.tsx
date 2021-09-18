@@ -1,3 +1,4 @@
+import { ThreeEvent } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { VillagerProps as VillagerData } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
@@ -32,11 +33,16 @@ export const box2: VillagerData = {
     console.log({ position });
   
     const selected = villager.uid === selectedNodeUid;
+
+    const handleClick = (event: ThreeEvent<MouseEvent>) => {
+        event.stopPropagation()
+        setSelectedNodeUid(villager.uid)
+    }
   
     return (
       <mesh
         position={[position.x as number, size / 2 + 0.0001, position.z]}
-        onClick={() => setSelectedNodeUid(villager.uid)}
+        onClick={handleClick}
       >
         <boxGeometry args={[size, size, size]} />
         <meshBasicMaterial color={selected ? "blue" : "gray"} />
