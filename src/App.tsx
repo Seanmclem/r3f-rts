@@ -12,6 +12,10 @@ import { useRef, useState } from "react";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { DoubleSide, Vector3 } from "three";
+import { VillagerProps } from "./components/villager/shared/types";
+import { box1, box2, Villager } from "./components/villager/Villager";
+import { BuildingProps } from "./components/buildings/shared/types";
+import { townCenter1 } from "./components/buildings/TownCenter";
 
 declare global {
   namespace JSX {
@@ -26,32 +30,7 @@ declare global {
 
 extend({ OrbitControls });
 
-const Box = ({
-  villager,
-  position,
-  selectedNodeUid,
-  setSelectedNodeUid,
-}: {
-  villager: VillagerProps;
-  position: Vector3;
-  selectedNodeUid?: string;
-  setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
-}) => {
-  const size = 2;
-  console.log({ position });
 
-  const selected = villager.uid === selectedNodeUid;
-
-  return (
-    <mesh
-      position={[position.x as number, size / 2 + 0.0001, position.z]}
-      onClick={() => setSelectedNodeUid(villager.uid)}
-    >
-      <boxGeometry args={[size, size, size]} />
-      <meshBasicMaterial color={selected ? "blue" : "gray"} />
-    </mesh>
-  );
-};
 
 const Plane = ({
   setPosition,
@@ -114,22 +93,9 @@ const CameraControls = () => {
   );
 };
 
-interface VillagerProps {
-  uid: string;
-  position: Vector3;
-}
-
-const box1: VillagerProps = {
-  uid: "fddsfsdfdsf",
-  position: new Vector3(9, 0, 0),
-};
-
-const box2: VillagerProps = {
-  uid: "f1234567dfdsf",
-  position: new Vector3(1, 0, 0),
-};
 
 export const App = () => {
+  const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1])
   const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
 
@@ -160,7 +126,7 @@ export const App = () => {
         <directionalLight position={[10, 15, 10]} color={"red"} />
 
         {villagers.map((villager) => (
-          <Box
+          <Villager
             key={villager.uid}
             villager={villager}
             position={villager.position}
@@ -168,6 +134,10 @@ export const App = () => {
             setSelectedNodeUid={setSelectedNodeUid}
           />
         ))}
+
+        {/* 
+          Need a map function to go over the Buildings
+        */}
 
         <Plane
           setSelectedNodeUid={setSelectedNodeUid}
