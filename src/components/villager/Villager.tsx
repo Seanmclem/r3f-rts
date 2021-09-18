@@ -1,23 +1,29 @@
 import { Vector3 } from "three";
-import { VillagerProps } from "./shared/types";
+import { VillagerProps as VillagerData } from "./shared/types";
+import { EmptyInventory } from "./shared/utils";
 
-export const box1: VillagerProps = {
+export const box1: VillagerData = {
     uid: "fddsfsdfdsf",
     position: new Vector3(9, 0, 0),
+    inventory: EmptyInventory,
+    status: "standing",
   };
   
-export const box2: VillagerProps = {
+export const box2: VillagerData = {
     uid: "f1234567dfdsf",
     position: new Vector3(1, 0, 0),
+    inventory: EmptyInventory,
+    status: "standing",
+
   };
 
-  export const Villager = ({
+  export const VillagerComponent = ({
     villager,
     position,
     selectedNodeUid,
     setSelectedNodeUid,
   }: {
-    villager: VillagerProps;
+    villager: VillagerData;
     position: Vector3;
     selectedNodeUid?: string;
     setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
