@@ -9,7 +9,7 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 - [ ] Villager management
   - [ ] Add buildings
   - [ ] create by click on TC
-  - [ ] UI for 
+  - [ ] UI for building/unit actions
   - [x] listing
   - [x] selecting
 - [ ] Walking villager
