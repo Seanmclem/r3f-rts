@@ -40,13 +40,12 @@ const Plane = ({
   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const handleClick = (event: any) => {
-    debugger;
     if (event.type === "click") {
       setSelectedNodeUid(undefined);
-      console.log("Left click");
     } else if (event.type === "contextmenu") {
-      const points: Vector3 = event.intersections[0].point;
-      setPosition(points);
+      const destination: Vector3 = event.intersections[0].point;
+      console.log({ destination })
+      setPosition(destination);
     }
   };
 
@@ -85,10 +84,10 @@ const CameraControls = () => {
       ref={controls}
       args={[camera, domElement]}
       enableZoom={true}
-      maxAzimuthAngle={Math.PI / 4}
-      maxPolarAngle={Math.PI}
-      minAzimuthAngle={-Math.PI / 4}
-      minPolarAngle={0}
+      // maxAzimuthAngle={Math.PI / 4}
+      // maxPolarAngle={Math.PI}
+      // minAzimuthAngle={-Math.PI / 4}
+      // minPolarAngle={0}
     />
   );
 };
@@ -99,18 +98,27 @@ export const App = () => {
   const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
 
-  // const [selectedNodeUids, setSelectedNodeUids] = useState<any[]>([]);
-
-  const handleSetPositions = (position: Vector3) => {
-    const newVillager = [...villagers].find(
-      (villager) => villager.uid === selectedNodeUid
+  const handleSetPositions = (
+    position: Vector3 | undefined,
+    nodeUidToMove = selectedNodeUid,
+    isPositionOnly?: boolean
+  ) => {
+    const updatedVillager = [...villagers].find(
+      (villager) => villager.uid === nodeUidToMove
     );
     const oldVillagers = villagers.filter(
-      (villager) => villager.uid !== selectedNodeUid
+      (villager) => villager.uid !== nodeUidToMove
     );
-    if (newVillager) {
-      newVillager.position = position;
-      setVillagers([...oldVillagers, newVillager]);
+    if (updatedVillager) {
+      if (isPositionOnly && position) { 
+        // updating position while moving
+        updatedVillager.position = position
+      } else {
+        // sets initial destination
+        // OR sets to undifined if reached destination
+        updatedVillager.destinationPosition = position;
+      }
+      setVillagers([...oldVillagers, updatedVillager]);
     }
   };
 
@@ -130,8 +138,10 @@ export const App = () => {
             key={villager.uid}
             villager={villager}
             position={villager.position}
+            destination={villager.destinationPosition}
             selectedNodeUid={selectedNodeUid}
             setSelectedNodeUid={setSelectedNodeUid}
+            handleSetPositions={handleSetPositions}
           />
         ))}
 
