@@ -13,6 +13,7 @@ Idk. It might be an RTS one day. Built with React Three Fiber
   - [x] listing
   - [x] selecting
 - [ ] Walking villager
+  - [ ] Spread new position/destination copy values, to prevent referential-equality
   - [ ] walk to x point
   - [ ] walk to y after
   - [ ] connect animations

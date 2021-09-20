@@ -33,10 +33,10 @@ extend({ OrbitControls });
 
 
 const Plane = ({
-  setPosition,
+  // setPosition,
   setSelectedNodeUid,
 }: {
-  setPosition: (position: Vector3) => void;
+  // setPosition: (position: Vector3) => void;
   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const handleClick = (event: any) => {
@@ -45,7 +45,7 @@ const Plane = ({
     } else if (event.type === "contextmenu") {
       const destination: Vector3 = event.intersections[0].point;
       console.log({ destination })
-      setPosition(destination);
+      // setPosition(destination);
     }
   };
 
@@ -98,30 +98,6 @@ export const App = () => {
   const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
 
-  const handleSetPositions = (
-    position: Vector3 | undefined,
-    nodeUidToMove = selectedNodeUid,
-    isPositionOnly?: boolean
-  ) => {
-    const updatedVillager = [...villagers].find(
-      (villager) => villager.uid === nodeUidToMove
-    );
-    const oldVillagers = villagers.filter(
-      (villager) => villager.uid !== nodeUidToMove
-    );
-    if (updatedVillager) {
-      if (isPositionOnly && position) { 
-        // updating position while moving
-        updatedVillager.position = position
-      } else {
-        // sets initial destination
-        // OR sets to undifined if reached destination
-        updatedVillager.destinationPosition = position;
-      }
-      setVillagers([...oldVillagers, updatedVillager]);
-    }
-  };
-
   return (
     <div className="canvas-container">
       <Canvas
@@ -137,11 +113,8 @@ export const App = () => {
           <VillagerComponent
             key={villager.uid}
             villager={villager}
-            position={villager.position}
-            destination={villager.destinationPosition}
             selectedNodeUid={selectedNodeUid}
             setSelectedNodeUid={setSelectedNodeUid}
-            handleSetPositions={handleSetPositions}
           />
         ))}
 
@@ -151,7 +124,6 @@ export const App = () => {
 
         <Plane
           setSelectedNodeUid={setSelectedNodeUid}
-          setPosition={handleSetPositions}
         />
       </Canvas>
     </div>

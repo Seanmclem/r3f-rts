@@ -1,4 +1,5 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
+import { useState } from "react";
 import { Vector3 } from "three";
 import { VillagerProps as VillagerData } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
@@ -20,51 +21,36 @@ export const box2: VillagerData = {
 
 export const VillagerComponent = ({
     villager,
-    position,
+    // initialPosition,
     setSelectedNodeUid,
-    handleSetPositions,
-    destination,
     selectedNodeUid,
 }: {
     villager: VillagerData;
-    position: Vector3;
+    // initialPosition: Vector3;
     setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
-    handleSetPositions: (
-        position: Vector3 | undefined, 
-        nodeToMove?: string | undefined,
-        isPositionOnly?: boolean,
-    ) => void;
-    destination?: Vector3;
     selectedNodeUid?: string;
 }) => {
     const size = 2;
     const selected = villager.uid === selectedNodeUid;
+    const [ currentPosition, setCurrentPosition ] = useState(villager.position)
+
     const handleClick = (event: ThreeEvent<MouseEvent>) => {
         event.stopPropagation()
         setSelectedNodeUid(villager.uid)
+
     }
 
     useFrame(() => {
-        destination && console.log({ destination })
-        if (destination) {
-            if (destination !== position) { // here is where we move the villager
-                console.log("trying to move the villager")
-                console.log({ destination, position })
-
-                const isPositionOnly = true
-                // const reachedDestination = postion >= 
-
-                handleSetPositions(destination, villager.uid, isPositionOnly)
-                console.log("I think I moved the villager")
-            } else {
-                handleSetPositions(undefined, villager.uid)
-            }
-        }
+        // setCurrentPosition()
     });
 
     return (
         <mesh
-            position={[position.x as number, size / 2 + 0.0001, position.z]}
+            position={[
+                currentPosition.x as number,
+                size / 2 + 0.0001,
+                currentPosition.z
+            ]}
             onClick={handleClick}
         >
             <boxGeometry args={[size, size, size]} />
