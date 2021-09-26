@@ -30,22 +30,23 @@ declare global {
 
 extend({ OrbitControls });
 
-
-
 const Plane = ({
   // setPosition,
   setSelectedNodeUid,
+  handleInitiateMoving,
 }: {
   // setPosition: (position: Vector3) => void;
   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
+  handleInitiateMoving: (destinationPosition: Vector3) => void;
 }) => {
   const handleClick = (event: any) => {
     if (event.type === "click") {
       setSelectedNodeUid(undefined);
     } else if (event.type === "contextmenu") {
       const destination: Vector3 = event.intersections[0].point;
-      console.log({ destination })
+      console.log({ destination });
       // setPosition(destination);
+      handleInitiateMoving(destination);
     }
   };
 
@@ -92,11 +93,67 @@ const CameraControls = () => {
   );
 };
 
+const initiateMoving = (
+  selectedNodeUid: string,
+  destinationPosition: Vector3,
+  villagers: VillagerProps[],
+  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
+) => {
+  const existingVillager = villagers.find(
+    (villager) => villager.uid === selectedNodeUid
+  );
+  const otherVillagers = villagers.filter(
+    (villager) => villager.uid !== selectedNodeUid
+  );
+  if (existingVillager) {
+    const updatedVillager: VillagerProps = {
+      ...existingVillager,
+      destinationPosition,
+      status: "moving",
+    };
+    setVillagers([...otherVillagers, updatedVillager]);
+  }
+};
+
+const reachDestination = (
+  specificNodeUid: string,
+  villagers: VillagerProps[],
+  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
+) => {
+  const existingVillager = villagers.find(
+    (villager) => villager.uid === specificNodeUid
+  );
+  const otherVillagers = villagers.filter(
+    (villager) => villager.uid !== specificNodeUid
+  );
+  if (existingVillager) {
+    const updatedVillager: VillagerProps = {
+      ...existingVillager,
+      destinationPosition: undefined,
+      status: "standing",
+    };
+    setVillagers([...otherVillagers, updatedVillager]);
+  }
+};
 
 export const App = () => {
-  const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1])
+  const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
   const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
+
+  const handleInitiateMoving = (destinationPosition: Vector3) => {
+    selectedNodeUid &&
+      initiateMoving(
+        selectedNodeUid,
+        destinationPosition,
+        villagers,
+        setVillagers
+      );
+  };
+
+  const handleReachDestination = (specificNodeUid: string) => {
+    reachDestination(specificNodeUid, villagers, setVillagers);
+  };
 
   return (
     <div className="canvas-container">
@@ -115,6 +172,7 @@ export const App = () => {
             villager={villager}
             selectedNodeUid={selectedNodeUid}
             setSelectedNodeUid={setSelectedNodeUid}
+            handleReachDestination={handleReachDestination}
           />
         ))}
 
@@ -124,6 +182,7 @@ export const App = () => {
 
         <Plane
           setSelectedNodeUid={setSelectedNodeUid}
+          handleInitiateMoving={handleInitiateMoving}
         />
       </Canvas>
     </div>
