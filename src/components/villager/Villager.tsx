@@ -4,6 +4,12 @@ import { Vector3 } from "three";
 import { VillagerProps as VillagerData } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
 
+const destinationMatch = (destination: Vector3, current: Vector3) => {
+  const xMatch = destination.x === current.x;
+  const yMatch = destination.y === current.y;
+  return xMatch && yMatch;
+};
+
 export const box1: VillagerData = {
   uid: "fddsfsdfdsf",
   initialPosition: new Vector3(9, 0, 0),
@@ -46,9 +52,15 @@ export const VillagerComponent = ({
   useFrame(() => {
     if (villager.destinationPosition) {
       //do moving, updating
-      setCurrentPosition(villager.destinationPosition); // REFINE HERE
+      //setCurrentPosition(villager.destinationPosition); // REFINE HERE
+      setCurrentPosition({
+        x: villager.destinationPosition.x,
+        y: villager.destinationPosition.y, // unused
+        z: villager.destinationPosition.z,
+      } as Vector3); // y=height, ignored, only sets x, and z
 
-      if (currentPosition === villager.destinationPosition) {
+      if (destinationMatch(villager.destinationPosition, currentPosition)) {
+        console.log("Destination reached!");
         handleReachDestination(villager.uid);
       }
     }
@@ -57,11 +69,7 @@ export const VillagerComponent = ({
 
   return (
     <mesh
-      position={[
-        currentPosition.x as number,
-        size / 2 + 0.0001,
-        currentPosition.z,
-      ]}
+      position={[currentPosition.x, size / 2 + 0.0001, currentPosition.z]}
       onClick={handleClick}
     >
       <boxGeometry args={[size, size, size]} />
