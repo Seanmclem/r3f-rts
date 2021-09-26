@@ -6,8 +6,9 @@ import { EmptyInventory } from "./shared/utils";
 
 const destinationMatch = (destination: Vector3, current: Vector3) => {
   const xMatch = destination.x === current.x;
-  const yMatch = destination.y === current.y;
-  return xMatch && yMatch;
+  const zMatch = destination.z === current.z;
+  debugger;
+  return xMatch && zMatch;
 };
 
 export const box1: VillagerData = {
@@ -47,19 +48,28 @@ export const VillagerComponent = ({
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     setSelectedNodeUid(villager.uid);
+    console.log({ currentPosition });
   };
 
   useFrame(() => {
     if (villager.destinationPosition) {
       //do moving, updating
       //setCurrentPosition(villager.destinationPosition); // REFINE HERE
+
+      const zDiff = villager.destinationPosition.z - currentPosition.z;
+      const zChange = zDiff > 0 ? 0.1 : -0.1;
+
+      const xDiff = villager.destinationPosition.x - currentPosition.x;
+      const xChange = xDiff > 0 ? 0.1 : -0.1;
+
       setCurrentPosition({
-        x: villager.destinationPosition.x,
+        x: currentPosition.x + xChange, //currentPosition.x + 0.1,
         y: villager.destinationPosition.y, // unused
-        z: villager.destinationPosition.z,
+        z: currentPosition.z + zChange,
       } as Vector3); // y=height, ignored, only sets x, and z
 
       if (destinationMatch(villager.destinationPosition, currentPosition)) {
+        //TODO: needs to be passing
         console.log("Destination reached!");
         handleReachDestination(villager.uid);
       }
