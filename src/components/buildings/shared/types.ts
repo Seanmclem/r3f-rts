@@ -1,7 +1,10 @@
 import { DoubleSide, Vector3 } from "three";
 
+export type BuildingType = "town-center" | "house";
 
 export interface BuildingProps {
-    type: "town-center" | "house",
-    position: Vector3,
-  }
+  uid: string;
+  type: BuildingType;
+  position: Vector3;
+  size: Vector3;
+}

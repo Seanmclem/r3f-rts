@@ -12,10 +12,9 @@ Idk. It might be an RTS one day. Built with React Three Fiber
   - [ ] UI for building/unit actions
   - [x] listing
   - [x] selecting
-- [ ] Walking villager
-  - [ ] Spread new position/destination copy values, to prevent referential-equality
-  - [ ] walk to x point
-  - [ ] walk to y after
+- [x] Walking villager
+  - [x] Spread new position/destination copy values, to prevent referential-equality
+  - [x] walk to x point
+  - [x] walk to z after
   - [ ] connect animations
-  - [ ] or pick the closest, x or y, get fraction of difference to increase-by each time. Get decimal-fraction difference between original x and y, apply same ratio difference of movement to the larger of the two's movement chane, per frame
 - [ ] Resources Hud (Top)

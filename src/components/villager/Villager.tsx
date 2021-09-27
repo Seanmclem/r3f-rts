@@ -4,16 +4,6 @@ import { Vector3 } from "three";
 import { VillagerProps as VillagerData } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
 
-const formatLimitDecimals = (value: number, decimals: number) => {
-  const parts = value.toString().split(".");
-
-  if (parts.length === 2) {
-    return Number([parts[0], parts[1].slice(0, decimals)].join("."));
-  } else {
-    return Number(parts[0]);
-  }
-};
-
 const destinationMatch = (destination: Vector3, current: Vector3) => {
   // const xMatch = formatLimitDecimals(destination.x, 1) === formatLimitDecimals(current.x, 1);
   // const zMatch = formatLimitDecimals(destination.z, 1) === formatLimitDecimals(current.z, 1);
@@ -38,18 +28,18 @@ export const box2: VillagerData = {
   status: "standing",
 };
 
-export const VillagerComponent = ({
-  villager,
-  // initialPosition,
-  setSelectedNodeUid,
-  selectedNodeUid,
-  handleReachDestination,
-}: {
+interface VillagerComponentProps {
   villager: VillagerData;
-  // initialPosition: Vector3;
   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
   selectedNodeUid?: string;
   handleReachDestination: (specificNodeUid: string) => void;
+}
+
+export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
+  villager,
+  setSelectedNodeUid,
+  selectedNodeUid,
+  handleReachDestination,
 }) => {
   // I'll still need to keep a global data updated
   const size = 2;

@@ -15,7 +15,10 @@ import { DoubleSide, Vector3 } from "three";
 import { VillagerProps } from "./components/villager/shared/types";
 import { box1, box2, VillagerComponent } from "./components/villager/Villager";
 import { BuildingProps } from "./components/buildings/shared/types";
-import { townCenter1 } from "./components/buildings/TownCenter";
+import {
+  townCenter1,
+  TownCenterComponent,
+} from "./components/buildings/TownCenter";
 
 declare global {
   namespace JSX {
@@ -165,6 +168,15 @@ export const App = () => {
         <Stars />
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 15, 10]} color={"red"} />
+
+        {buildings.map((building) => (
+          <TownCenterComponent
+            key={building.uid}
+            building={building}
+            selectedNodeUid={selectedNodeUid}
+            setSelectedNodeUid={setSelectedNodeUid}
+          />
+        ))}
 
         {villagers.map((villager) => (
           <VillagerComponent
