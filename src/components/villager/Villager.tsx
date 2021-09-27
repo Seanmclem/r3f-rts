@@ -4,9 +4,22 @@ import { Vector3 } from "three";
 import { VillagerProps as VillagerData } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
 
+const formatLimitDecimals = (value: number, decimals: number) => {
+  const parts = value.toString().split(".");
+
+  if (parts.length === 2) {
+    return Number([parts[0], parts[1].slice(0, decimals)].join("."));
+  } else {
+    return Number(parts[0]);
+  }
+};
+
 const destinationMatch = (destination: Vector3, current: Vector3) => {
-  const xMatch = destination.x === current.x;
-  const zMatch = destination.z === current.z;
+  // const xMatch = formatLimitDecimals(destination.x, 1) === formatLimitDecimals(current.x, 1);
+  // const zMatch = formatLimitDecimals(destination.z, 1) === formatLimitDecimals(current.z, 1);
+  const xMatch = destination.x.toFixed(0) === current.x.toFixed(0);
+  const zMatch = destination.z.toFixed(0) === current.z.toFixed(0);
+
   debugger;
   return xMatch && zMatch;
 };
