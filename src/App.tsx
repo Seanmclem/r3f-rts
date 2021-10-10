@@ -13,12 +13,19 @@ import { useRef, useState } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { DoubleSide, Vector3 } from "three";
 import { VillagerProps } from "./components/villager/shared/types";
-import { box1, box2, VillagerComponent } from "./components/villager/Villager";
+import {
+  box1,
+  box2,
+  initiateMoving,
+  reachDestination,
+  VillagerComponent,
+} from "./components/villager/Villager";
 import { BuildingProps } from "./components/buildings/shared/types";
 import {
   townCenter1,
   TownCenterComponent,
 } from "./components/buildings/TownCenter";
+import { Physics, usePlane } from "@react-three/cannon";
 
 declare global {
   namespace JSX {
@@ -53,8 +60,13 @@ const Plane = ({
     }
   };
 
+  const [ref] = usePlane(() => ({
+    rotation: [-Math.PI / 2, 0, 0],
+  }));
+
   return (
     <mesh
+      ref={ref}
       position={[0, 0, 0]}
       rotation={[Math.PI / 2, 0, 0]}
       scale={[1, 1, 1]}
@@ -82,6 +94,9 @@ const CameraControls = () => {
   useFrame(
     (_state) => controls?.current?.update() && controls?.current?.update()
   );
+  // camera.add()
+  // ^ https://discourse.threejs.org/t/how-to-build-a-hud-in-a-single-scene-with-a-single-camera/16108/2
+
   // camera.position = {}
   return (
     <orbitControls
@@ -94,49 +109,6 @@ const CameraControls = () => {
       // minPolarAngle={0}
     />
   );
-};
-
-const initiateMoving = (
-  selectedNodeUid: string,
-  destinationPosition: Vector3,
-  villagers: VillagerProps[],
-  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
-) => {
-  const existingVillager = villagers.find(
-    (villager) => villager.uid === selectedNodeUid
-  );
-  const otherVillagers = villagers.filter(
-    (villager) => villager.uid !== selectedNodeUid
-  );
-  if (existingVillager) {
-    const updatedVillager: VillagerProps = {
-      ...existingVillager,
-      destinationPosition,
-      status: "moving",
-    };
-    setVillagers([...otherVillagers, updatedVillager]);
-  }
-};
-
-const reachDestination = (
-  specificNodeUid: string,
-  villagers: VillagerProps[],
-  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
-) => {
-  const existingVillager = villagers.find(
-    (villager) => villager.uid === specificNodeUid
-  );
-  const otherVillagers = villagers.filter(
-    (villager) => villager.uid !== specificNodeUid
-  );
-  if (existingVillager) {
-    const updatedVillager: VillagerProps = {
-      ...existingVillager,
-      destinationPosition: undefined,
-      status: "standing",
-    };
-    setVillagers([...otherVillagers, updatedVillager]);
-  }
 };
 
 export const App = () => {
@@ -164,38 +136,40 @@ export const App = () => {
         style={{ height: window.innerHeight, width: window.innerWidth }}
         camera={{ fov: 75, position: [10, 8, 10] }}
       >
-        <CameraControls />
-        <Stars />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 15, 10]} color={"red"} />
+        <Physics>
+          <CameraControls />
+          <Stars />
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 15, 10]} color={"red"} />
 
-        {buildings.map((building) => (
-          <TownCenterComponent
-            key={building.uid}
-            building={building}
-            selectedNodeUid={selectedNodeUid}
-            setSelectedNodeUid={setSelectedNodeUid}
-          />
-        ))}
+          {buildings.map((building) => (
+            <TownCenterComponent
+              key={building.uid}
+              building={building}
+              selectedNodeUid={selectedNodeUid}
+              setSelectedNodeUid={setSelectedNodeUid}
+            />
+          ))}
 
-        {villagers.map((villager) => (
-          <VillagerComponent
-            key={villager.uid}
-            villager={villager}
-            selectedNodeUid={selectedNodeUid}
-            setSelectedNodeUid={setSelectedNodeUid}
-            handleReachDestination={handleReachDestination}
-          />
-        ))}
+          {villagers.map((villager) => (
+            <VillagerComponent
+              key={villager.uid}
+              villager={villager}
+              selectedNodeUid={selectedNodeUid}
+              setSelectedNodeUid={setSelectedNodeUid}
+              handleReachDestination={handleReachDestination}
+            />
+          ))}
 
-        {/* 
+          {/* 
           Need a map function to go over the Buildings
         */}
 
-        <Plane
-          setSelectedNodeUid={setSelectedNodeUid}
-          handleInitiateMoving={handleInitiateMoving}
-        />
+          <Plane
+            setSelectedNodeUid={setSelectedNodeUid}
+            handleInitiateMoving={handleInitiateMoving}
+          />
+        </Physics>
       </Canvas>
     </div>
   );

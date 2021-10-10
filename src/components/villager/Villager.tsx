@@ -1,8 +1,52 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useState } from "react";
 import { Vector3 } from "three";
-import { VillagerProps as VillagerData } from "./shared/types";
+import { VillagerProps as VillagerData, VillagerProps } from "./shared/types";
 import { EmptyInventory } from "./shared/utils";
+import { useBox } from "@react-three/cannon";
+
+export const initiateMoving = (
+  selectedNodeUid: string,
+  destinationPosition: Vector3,
+  villagers: VillagerProps[],
+  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
+) => {
+  const existingVillager = villagers.find(
+    (villager) => villager.uid === selectedNodeUid
+  );
+  const otherVillagers = villagers.filter(
+    (villager) => villager.uid !== selectedNodeUid
+  );
+  if (existingVillager) {
+    const updatedVillager: VillagerProps = {
+      ...existingVillager,
+      destinationPosition,
+      status: "moving",
+    };
+    setVillagers([...otherVillagers, updatedVillager]);
+  }
+};
+
+export const reachDestination = (
+  specificNodeUid: string,
+  villagers: VillagerProps[],
+  setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
+) => {
+  const existingVillager = villagers.find(
+    (villager) => villager.uid === specificNodeUid
+  );
+  const otherVillagers = villagers.filter(
+    (villager) => villager.uid !== specificNodeUid
+  );
+  if (existingVillager) {
+    const updatedVillager: VillagerProps = {
+      ...existingVillager,
+      destinationPosition: undefined,
+      status: "standing",
+    };
+    setVillagers([...otherVillagers, updatedVillager]);
+  }
+};
 
 const destinationMatch = (destination: Vector3, current: Vector3) => {
   // const xMatch = formatLimitDecimals(destination.x, 1) === formatLimitDecimals(current.x, 1);
@@ -70,9 +114,9 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
         y: villager.destinationPosition.y, // unused
         z: currentPosition.z + zChange,
       } as Vector3); // y=height, ignored, only sets x, and z
+      api.position.set(currentPosition.x, size / 2 + 0.0001, currentPosition.z);
 
       if (destinationMatch(villager.destinationPosition, currentPosition)) {
-        //TODO: needs to be passing
         console.log("Destination reached!");
         handleReachDestination(villager.uid);
       }
@@ -80,10 +124,17 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
     // setCurrentPosition()
   });
 
+  const [ref, api] = useBox(() => ({
+    mass: 0,
+    position: [currentPosition.x, size / 2 + 0.0001, currentPosition.z],
+  }));
+  console.log({ x: currentPosition.x, z: currentPosition.z });
+
   return (
     <mesh
-      position={[currentPosition.x, size / 2 + 0.0001, currentPosition.z]}
+      ref={ref}
       onClick={handleClick}
+      // position={[currentPosition.x, size / 2 + 0.0001, currentPosition.z]}
     >
       <boxGeometry args={[size, size, size]} />
       <meshBasicMaterial color={selected ? "blue" : "gray"} />

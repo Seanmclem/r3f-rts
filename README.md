@@ -4,15 +4,16 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 
 ## To-dos
 
-- [x] Teleporting villager
+- [x] Teleporting worker
 - [x] better camera
-- [ ] Villager management
+- [ ] Worker management
   - [ ] Add buildings
-  - [ ] create by click on TC
+    - [ ] "Collide" with buildings
+  - [ ] create worker from menu, via click on TC
   - [ ] UI for building/unit actions
   - [x] listing
   - [x] selecting
-- [x] Walking villager
+- [x] Walking worker
   - [x] Spread new position/destination copy values, to prevent referential-equality
   - [x] walk to x point
   - [x] walk to z after
