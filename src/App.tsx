@@ -11,7 +11,7 @@ import { useRef, useState } from "react";
 // import { useBox, usePlane } from "@react-three/cannon";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { DoubleSide, Vector3 } from "three";
+import { DoubleSide, Object3D, Vector3 } from "three";
 import { VillagerProps } from "./components/villager/shared/types";
 import {
   box1,
@@ -25,7 +25,8 @@ import {
   townCenter1,
   TownCenterComponent,
 } from "./components/buildings/TownCenter";
-import { Physics, usePlane } from "@react-three/cannon";
+import { Physics, useBox, usePlane } from "@react-three/cannon";
+import { BottomHUD } from "./components/hud-container/BottomHUD";
 
 declare global {
   namespace JSX {
@@ -142,6 +143,8 @@ export const App = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 15, 10]} color={"red"} />
 
+          {/* {hudRef && hudRef.current ? <HudBox ref={hudRef} /> : null} */}
+
           {buildings.map((building) => (
             <TownCenterComponent
               key={building.uid}
@@ -171,6 +174,7 @@ export const App = () => {
           />
         </Physics>
       </Canvas>
+      <BottomHUD />
     </div>
   );
 };

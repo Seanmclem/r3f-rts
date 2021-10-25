@@ -128,7 +128,7 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
     mass: 0,
     position: [currentPosition.x, size / 2 + 0.0001, currentPosition.z],
   }));
-  console.log({ x: currentPosition.x, z: currentPosition.z });
+  // console.log({ x: currentPosition.x, z: currentPosition.z });
 
   return (
     <mesh
