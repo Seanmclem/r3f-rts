@@ -125,7 +125,26 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
   });
 
   const [ref, api] = useBox(() => ({
-    mass: 0,
+    onCollide: () => {
+      api.rotation.set(0, 0, 0);
+      console.log("colliding!!!!");
+      api.velocity.set(0, 0, 0);
+    },
+    onCollideBegin: () => {
+      // api.mass.set(0);
+      console.log("begin");
+      api.velocity.set(0, 0, 0);
+      handleReachDestination(villager.uid);
+      api.velocity.set(0, 0, 0);
+    },
+    onCollideEnd: () => {
+      // api.mass.set(1);
+      console.log("end");
+
+      api.rotation.set(0, 0, 0);
+    },
+    mass: 1,
+    type: "Kinematic",
     position: [currentPosition.x, size / 2 + 0.0001, currentPosition.z],
   }));
   // console.log({ x: currentPosition.x, z: currentPosition.z });

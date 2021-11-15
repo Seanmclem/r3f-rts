@@ -1,7 +1,3 @@
-import { useBox } from "@react-three/cannon";
-import { useFrame, useThree } from "@react-three/fiber";
-import { ForwardedRef, forwardRef, useEffect, useRef } from "react";
-import { Object3D } from "three";
 import styled from "styled-components";
 import { useWindowWidth } from "@react-hook/window-size";
 
