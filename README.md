@@ -8,7 +8,9 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 - [x] better camera
 - [ ] Worker management
   - [ ] Add buildings
-    - [ ] "Collide" with buildings
+    - [ ] "Collide" with buildings ... needs useBox for collision
+    - [ ] Needs generic container for multiple building types
+    - [ ] Needs to trigger hud only on-click
   - [ ] create worker from menu, via click on TC
   - [ ] UI for building/unit actions
   - [x] listing
@@ -19,3 +21,6 @@ Idk. It might be an RTS one day. Built with React Three Fiber
   - [x] walk to z after
   - [ ] connect animations
 - [ ] Resources Hud (Top)
+  - [ ] add trees, individual/groups
+  - [ ] Gather resources
+  - [ ] deposit resources

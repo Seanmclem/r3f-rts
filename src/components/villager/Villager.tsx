@@ -59,14 +59,14 @@ const destinationMatch = (destination: Vector3, current: Vector3) => {
 };
 
 export const box1: VillagerData = {
-  uid: "fddsfsdfdsf",
+  uid: "qwertyuiop",
   initialPosition: new Vector3(9, 0, 0),
   inventory: EmptyInventory,
   status: "standing",
 };
 
 export const box2: VillagerData = {
-  uid: "f1234567dfdsf",
+  uid: "asdfghjkl",
   initialPosition: new Vector3(1, 0, 0),
   inventory: EmptyInventory,
   status: "standing",
@@ -125,17 +125,20 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
   });
 
   const [ref, api] = useBox(() => ({
+    userData: villager.uid,
     onCollide: () => {
       api.rotation.set(0, 0, 0);
       console.log("colliding!!!!");
       api.velocity.set(0, 0, 0);
     },
-    onCollideBegin: () => {
+    onCollideBegin: (e) => {
+      console.log(e);
       // api.mass.set(0);
       console.log("begin");
-      api.velocity.set(0, 0, 0);
+      console.log("Destination BEGIN reached!");
+      // api.velocity.set(0, 0, 0);
       handleReachDestination(villager.uid);
-      api.velocity.set(0, 0, 0);
+      // api.velocity.set(0, 0, 0);
     },
     onCollideEnd: () => {
       // api.mass.set(1);
@@ -146,6 +149,7 @@ export const VillagerComponent: React.VFC<VillagerComponentProps> = ({
     mass: 1,
     type: "Kinematic",
     position: [currentPosition.x, size / 2 + 0.0001, currentPosition.z],
+    args: [size, size, size],
   }));
   // console.log({ x: currentPosition.x, z: currentPosition.z });
 
