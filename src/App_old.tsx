@@ -12,22 +12,21 @@ import { useRef, useState } from "react";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { DoubleSide, Object3D, Vector3 } from "three";
-// import { VillagerProps } from "./components/villager/shared/types";
-// import {
-//   box1,
-//   box2,
-//   initiateMoving,
-//   reachDestination,
-//   VillagerComponent,
-// } from "./components/villager/Villager";
-// import { BuildingProps } from "./components/buildings/shared/types";
-// import {
-//   townCenter1,
-//   TownCenterComponent,
-// } from "./components/buildings/TownCenter";
+import { VillagerProps } from "./components/villager/shared/types";
+import {
+  box1,
+  box2,
+  initiateMoving,
+  reachDestination,
+  VillagerComponent,
+} from "./components/villager/Villager";
+import { BuildingProps } from "./components/buildings/shared/types";
+import {
+  townCenter1,
+  TownCenterComponent,
+} from "./components/buildings/TownCenter";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { BottomHUD } from "./components/hud-container/BottomHUD";
-import { Box } from "./components/generic/Box";
 
 declare global {
   namespace JSX {
@@ -42,15 +41,23 @@ declare global {
 
 extend({ OrbitControls });
 
-const Plane = ({}: {}) => {
+const Plane = ({
+  // setPosition,
+  setSelectedNodeUid,
+  handleInitiateMoving,
+}: {
+  // setPosition: (position: Vector3) => void;
+  setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
+  handleInitiateMoving: (destinationPosition: Vector3) => void;
+}) => {
   const handleClick = (event: any) => {
     if (event.type === "click") {
-      // setSelectedNodeUid(undefined);
+      setSelectedNodeUid(undefined);
     } else if (event.type === "contextmenu") {
       const destination: Vector3 = event.intersections[0].point;
       console.log({ destination });
       // setPosition(destination);
-      // handleInitiateMoving(destination);
+      handleInitiateMoving(destination);
     }
   };
 
@@ -106,24 +113,23 @@ const CameraControls = () => {
 };
 
 export const App = () => {
-  // const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
-  // const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
-  // const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
+  const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
+  const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
+  const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
 
-  // const handleInitiateMoving = (destinationPosition: Vector3) => {
-  //   selectedNodeUid &&
-  //     initiateMoving(
-  //       selectedNodeUid,
-  //       destinationPosition,
-  //       villagers,
-  //       setVillagers
-  //     );
-  // };
+  const handleInitiateMoving = (destinationPosition: Vector3) => {
+    selectedNodeUid &&
+      initiateMoving(
+        selectedNodeUid,
+        destinationPosition,
+        villagers,
+        setVillagers
+      );
+  };
 
-  // const handleReachDestination = (specificNodeUid: string) => {
-  //   reachDestination(specificNodeUid, villagers, setVillagers);
-  // };
-  // console.log(geometry);
+  const handleReachDestination = (specificNodeUid: string) => {
+    reachDestination(specificNodeUid, villagers, setVillagers);
+  };
 
   return (
     <div className="canvas-container">
@@ -138,7 +144,7 @@ export const App = () => {
           <directionalLight position={[10, 15, 10]} color={"red"} />
 
           {/* {hudRef && hudRef.current ? <HudBox ref={hudRef} /> : null} */}
-          {/* 
+
           {buildings.map((building) => (
             <TownCenterComponent
               key={building.uid}
@@ -156,17 +162,15 @@ export const App = () => {
               setSelectedNodeUid={setSelectedNodeUid}
               handleReachDestination={handleReachDestination}
             />
-          ))} */}
+          ))}
 
           {/* 
           Need a map function to go over the Buildings
         */}
 
-          <Box size={5} />
-
           <Plane
-          // setSelectedNodeUid={setSelectedNodeUid}
-          // handleInitiateMoving={handleInitiateMoving}
+            setSelectedNodeUid={setSelectedNodeUid}
+            handleInitiateMoving={handleInitiateMoving}
           />
         </Physics>
       </Canvas>
