@@ -171,6 +171,23 @@ export const App = () => {
 
           {/* <OneSide planeSize={100} boxSize={5} /> */}
 
+          {/*  (planeSize / cubeSize)  == covers the length of the board */}
+          {boxStubs.map((_boxNumberByZero, idx) => {
+            /** covers the length of the board ... 20, for 5 by 100 */
+            const cubesPlaneLength = planeSize / cubeSize;
+            return idx < cubesPlaneLength ? (
+              <Box
+                planeSize={planeSize}
+                boxSize={cubeSize}
+                positionModifier={10 * (idx + 1) - 5}
+              />
+            ) : null;
+          })}
+
+          {/* x20 .... aka 100/5 = 20 */}
+
+          {/* Added columnModifier={5}, + 5 per 10 */}
+          {/* 
           <Box planeSize={100} boxSize={5} positionModifier={5} />
           <Box planeSize={100} boxSize={5} positionModifier={15} />
           <Box planeSize={100} boxSize={5} positionModifier={25} />
@@ -196,9 +213,7 @@ export const App = () => {
           <Box planeSize={100} boxSize={5} positionModifier={185} />
 
           <Box planeSize={100} boxSize={5} positionModifier={195} />
-          {/* x20 .... aka 100/5 = 20 */}
 
-          {/* Added columnModifier={5}, + 5 per 10 */}
           <Box
             planeSize={100}
             boxSize={5}
@@ -229,7 +244,7 @@ export const App = () => {
             boxSize={5}
             positionModifier={195}
             columnModifier={5}
-          />
+          /> */}
 
           <Plane
             size={planeSize}
