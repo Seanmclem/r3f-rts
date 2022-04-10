@@ -107,8 +107,9 @@ const CameraControls = () => {
 };
 
 const cubeSize = 5;
-const cubeNumber = 30;
-const planeSize = 100;
+const planeSize = 30;
+const cubeNumber = 30 / 5; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
+console.log("poo", { cubeSize, planeSize, cubeNumber });
 
 const boxStubs = Array.from(Array(cubeNumber).keys());
 
@@ -172,17 +173,25 @@ export const App = () => {
           {/* <OneSide planeSize={100} boxSize={5} /> */}
 
           {/*  (planeSize / cubeSize)  == covers the length of the board */}
-          {boxStubs.map((_boxNumberByZero, idx) => {
-            /** covers the length of the board ... 20, for 5 by 100 */
-            const cubesPlaneLength = planeSize / cubeSize;
-            return idx < cubesPlaneLength ? (
-              <Box
-                planeSize={planeSize}
-                boxSize={cubeSize}
-                positionModifier={10 * (idx + 1) - 5}
-              />
-            ) : null;
-          })}
+          {boxStubs.map((_columnNum, iDy) =>
+            boxStubs.map((_boxNumberByZero, idx) => {
+              /** covers the length of the board ... 20, for 5 by 100 */
+              const cubesPlaneLength = planeSize / cubeSize;
+              // console.log(cubesPlaneLength % idx);
+              const cubeNumber = idx + 1;
+
+              console.log({ cubesPlaneLength, cubeNumber });
+
+              return true ? (
+                <Box
+                  planeSize={planeSize}
+                  boxSize={cubeSize}
+                  positionModifier={10 * cubeNumber - cubeSize}
+                  columnModifier={iDy * 5}
+                />
+              ) : null;
+            })
+          )}
 
           {/* x20 .... aka 100/5 = 20 */}
 
