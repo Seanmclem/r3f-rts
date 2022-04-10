@@ -108,7 +108,7 @@ const CameraControls = () => {
 
 const cubeSize = 5;
 const planeSize = 30;
-const cubeNumber = 30 / 5; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
+const cubeNumber = planeSize / 5; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
 console.log("poo", { cubeSize, planeSize, cubeNumber });
 
 const boxStubs = Array.from(Array(cubeNumber).keys());
