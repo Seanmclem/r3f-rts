@@ -105,15 +105,19 @@ const CameraControls = () => {
     />
   );
 };
+// const planeSize = 30;
 
-const cubeSize = 5;
-const planeSize = 30;
-const cubeNumber = planeSize / cubeSize; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
-console.log("poo", { cubeSize, planeSize, cubeNumber });
+const MyGrid = ({
+  cubeSize,
+  planeSize,
+}: {
+  cubeSize: number;
+  planeSize: number;
+}) => {
+  // const cubeSize = 5;
+  const cubeNumber = planeSize / cubeSize;
 
-const boxStubs = Array.from(Array(cubeNumber).keys());
-
-const MyGrid = () => {
+  const boxStubs = Array.from(Array(cubeNumber).keys());
   return (
     <>
       {boxStubs.map((_columnNum, idX) =>
@@ -142,6 +146,8 @@ const MyGrid = () => {
 };
 
 export const App = () => {
+  const [planeSize, _setPlaneSize] = useState(30);
+  const [gridSquareSize, _setGridSquareSize] = useState(5);
   // const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
   // const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   // const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
@@ -202,7 +208,7 @@ export const App = () => {
 
           {/*  (planeSize / cubeSize)  == covers the length of the board */}
 
-          <MyGrid />
+          <MyGrid cubeSize={gridSquareSize} planeSize={planeSize} />
           {/* Gone */}
 
           {/* x20 .... aka 100/5 = 20 */}
