@@ -125,11 +125,13 @@ const MyGrid = () => {
 
           console.log({ cubesPlaneLength, cubeNumber });
 
-          return true ? (
+          const oneMoreCubePosition = cubeSize * 2;
+
+          return true ? ( // idY < 3 && cubeNumber < 2
             <Box
               planeSize={planeSize}
               boxSize={cubeSize}
-              positionModifier={cubeSize * 2 * cubeNumber - cubeSize}
+              positionModifier={oneMoreCubePosition * cubeNumber - cubeSize}
               columnModifier={idX * cubeSize}
             />
           ) : null;
