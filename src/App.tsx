@@ -108,10 +108,36 @@ const CameraControls = () => {
 
 const cubeSize = 5;
 const planeSize = 30;
-const cubeNumber = planeSize / 5; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
+const cubeNumber = planeSize / cubeSize; // SIX // TODO: derrive cubeNumber from plane-and-cube-size
 console.log("poo", { cubeSize, planeSize, cubeNumber });
 
 const boxStubs = Array.from(Array(cubeNumber).keys());
+
+const MyGrid = () => {
+  return (
+    <>
+      {boxStubs.map((_columnNum, idX) =>
+        boxStubs.map((_boxNumberByZero, idY) => {
+          /** covers the length of the board ... 20, for 5 by 100 */
+          const cubesPlaneLength = planeSize / cubeSize;
+          // console.log(cubesPlaneLength % idx);
+          const cubeNumber = idY + 1;
+
+          console.log({ cubesPlaneLength, cubeNumber });
+
+          return true ? (
+            <Box
+              planeSize={planeSize}
+              boxSize={cubeSize}
+              positionModifier={cubeSize * 2 * cubeNumber - cubeSize}
+              columnModifier={idX * cubeSize}
+            />
+          ) : null;
+        })
+      )}
+    </>
+  );
+};
 
 export const App = () => {
   // const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
@@ -144,7 +170,7 @@ export const App = () => {
           <Stars />
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 15, 10]} color={"red"} />
-
+          <axesHelper args={[50]} />
           {/* {hudRef && hudRef.current ? <HudBox ref={hudRef} /> : null} */}
           {/* 
           {buildings.map((building) => (
@@ -173,25 +199,9 @@ export const App = () => {
           {/* <OneSide planeSize={100} boxSize={5} /> */}
 
           {/*  (planeSize / cubeSize)  == covers the length of the board */}
-          {boxStubs.map((_columnNum, iDy) =>
-            boxStubs.map((_boxNumberByZero, idx) => {
-              /** covers the length of the board ... 20, for 5 by 100 */
-              const cubesPlaneLength = planeSize / cubeSize;
-              // console.log(cubesPlaneLength % idx);
-              const cubeNumber = idx + 1;
 
-              console.log({ cubesPlaneLength, cubeNumber });
-
-              return true ? (
-                <Box
-                  planeSize={planeSize}
-                  boxSize={cubeSize}
-                  positionModifier={10 * cubeNumber - cubeSize}
-                  columnModifier={iDy * 5}
-                />
-              ) : null;
-            })
-          )}
+          <MyGrid />
+          {/* Gone */}
 
           {/* x20 .... aka 100/5 = 20 */}
 
