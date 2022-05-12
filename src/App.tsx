@@ -7,7 +7,7 @@ import {
   // Vector3,
 } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { useBox, usePlane } from "@react-three/cannon";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -116,33 +116,54 @@ const MyGrid = ({
 }) => {
   // const cubeSize = 5;
   const cubeNumber = planeSize / cubeSize;
+  const aStarArray: any[] = [];
 
   const boxStubs = Array.from(Array(cubeNumber).keys());
-  return (
-    <>
-      {boxStubs.map((_columnNum, idX) =>
-        boxStubs.map((_boxNumberByZero, idY) => {
-          /** covers the length of the board ... 20, for 5 by 100 */
-          const cubesPlaneLength = planeSize / cubeSize;
-          // console.log(cubesPlaneLength % idx);
-          const cubeNumber = idY + 1;
 
-          console.log({ cubesPlaneLength, cubeNumber });
+  console.log("RENDER");
+  console.log("boxStubs.length", boxStubs.length);
 
-          const oneMoreCubePosition = cubeSize * 2;
+  // TODO: move ^all v this grid making logic into external function, to run once
+  // move grid to ext-component
+  // move grid-data to zustand store, imported into component
+  // zustand store auto generates a-star grid also, from like empty/filled properties in grid model
+  // NEED: basic grid model/interface
 
-          return true ? ( // idY < 3 && cubeNumber < 2
-            <Box
-              planeSize={planeSize}
-              boxSize={cubeSize}
-              positionModifier={oneMoreCubePosition * cubeNumber - cubeSize}
-              columnModifier={idX * cubeSize}
-            />
-          ) : null;
-        })
-      )}
-    </>
+  const [rendering] = useState(
+    boxStubs.map((_columnNum, idX) =>
+      boxStubs.map((_boxNumberByZero, idY) => {
+        if (typeof aStarArray[idX]?.length === "number") {
+          aStarArray[idX].push(`a-${idX}-${idY}`);
+          // should be 0 or 1's.
+        } else {
+          aStarArray[idX] = [`b-${idX}-${idY}`];
+        }
+
+        console.log({ aStarArray });
+
+        /** covers the length of the board ... 20, for 5 by 100 */
+        const cubesPlaneLength = planeSize / cubeSize;
+        // console.log(cubesPlaneLength % idx);
+        const cubeNumber = idY + 1;
+
+        console.log({ idX, idY });
+
+        const oneMoreCubePosition = cubeSize * 2;
+
+        return true ? ( // idY < 3 && cubeNumber < 2
+          <Box
+            key={`${idX}${idY}`}
+            planeSize={planeSize}
+            boxSize={cubeSize}
+            positionModifier={oneMoreCubePosition * cubeNumber - cubeSize}
+            columnModifier={idX * cubeSize}
+          />
+        ) : null;
+      })
+    )
   );
+
+  return <>{rendering}</>;
 };
 
 export const App = () => {
