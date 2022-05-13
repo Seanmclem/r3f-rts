@@ -43,10 +43,11 @@ export const prepGridData = ({
 
       //if (idY < 4) {
       gridData[idX].push({
-        xPosition: topPlane - positionModifier / 2,
+        // x should get bigger as it moves right?
+        xPosition: -topPlane + positionModifier / 2,
         // can swap Z/Y for ratate of thing order generation
         yPosition: cubeTop, // cube, bottom
-        zPosition: topPlane - cubeTop - columnModifier,
+        zPosition: -topPlane + cubeTop + columnModifier,
         filled: !!(JSON.stringify([idX, idY]) === JSON.stringify(filledOne)),
       });
       //}
