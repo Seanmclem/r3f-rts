@@ -5,6 +5,8 @@ interface BoxyProps {
   columnModifier?: number;
 }
 
+// DEPRECATED
+
 export const GridBox = ({
   boxSize,
   planeSize,

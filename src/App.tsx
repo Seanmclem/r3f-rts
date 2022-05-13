@@ -169,69 +169,6 @@ export const App = () => {
           {/*  (planeSize / cubeSize)  == covers the length of the board */}
 
           <PlaneGrid cubeSize={gridSquareSize} planeSize={planeSize} />
-          {/* Gone */}
-
-          {/* x20 .... aka 100/5 = 20 */}
-
-          {/* Added columnModifier={5}, + 5 per 10 */}
-          {/* 
-          <Box planeSize={100} boxSize={5} positionModifier={5} />
-          <Box planeSize={100} boxSize={5} positionModifier={15} />
-          <Box planeSize={100} boxSize={5} positionModifier={25} />
-
-          <Box planeSize={100} boxSize={5} positionModifier={35} />
-          <Box planeSize={100} boxSize={5} positionModifier={45} />
-          <Box planeSize={100} boxSize={5} positionModifier={55} />
-          <Box planeSize={100} boxSize={5} positionModifier={65} />
-
-          <Box planeSize={100} boxSize={5} positionModifier={75} />
-          <Box planeSize={100} boxSize={5} positionModifier={85} />
-          <Box planeSize={100} boxSize={5} positionModifier={95} />
-          <Box planeSize={100} boxSize={5} positionModifier={105} />
-
-          <Box planeSize={100} boxSize={5} positionModifier={115} />
-          <Box planeSize={100} boxSize={5} positionModifier={125} />
-          <Box planeSize={100} boxSize={5} positionModifier={135} />
-          <Box planeSize={100} boxSize={5} positionModifier={145} />
-
-          <Box planeSize={100} boxSize={5} positionModifier={155} />
-          <Box planeSize={100} boxSize={5} positionModifier={165} />
-          <Box planeSize={100} boxSize={5} positionModifier={175} />
-          <Box planeSize={100} boxSize={5} positionModifier={185} />
-
-          <Box planeSize={100} boxSize={5} positionModifier={195} />
-
-          <Box
-            planeSize={100}
-            boxSize={5}
-            positionModifier={155}
-            columnModifier={5}
-          />
-          <Box
-            planeSize={100}
-            boxSize={5}
-            positionModifier={165}
-            columnModifier={5}
-          />
-          <Box
-            planeSize={100}
-            boxSize={5}
-            positionModifier={175}
-            columnModifier={5}
-          />
-          <Box
-            planeSize={100}
-            boxSize={5}
-            positionModifier={185}
-            columnModifier={5}
-          />
-
-          <Box
-            planeSize={100}
-            boxSize={5}
-            positionModifier={195}
-            columnModifier={5}
-          /> */}
 
           <Plane
             size={planeSize}

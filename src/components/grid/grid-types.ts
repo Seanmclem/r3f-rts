@@ -1,5 +1,3 @@
-import { NumericLiteral } from "typescript";
-
 export interface GridItem {
   rowId: number;
   rowsColumnId: number;
@@ -12,11 +10,14 @@ export interface GridItem {
 }
 
 export interface GridBoxCoordinates {
-  yHeight: number;
-  center: number; // center can be derrived from X-and-Z from GridBox,
-  // formulas can generate these values, and then use them to generate the grids
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
+  xPosition: number;
+  yPosition: number;
+  zPosition: number;
+
+  // ^ centers would just be these ^, or just x/z
+
+  top: number; // z +/- cube/2 ...?
+  right: number; // x - cube/2, or plus wtf
+  bottom: number; // z +/- cube/2 ...?
+  left: number; // x + cube/2, or minus wtf
 }
