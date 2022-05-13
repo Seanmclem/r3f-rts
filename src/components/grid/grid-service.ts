@@ -13,7 +13,9 @@ export const prepGridData = ({
 
   // ^ box-stubs?, kill w/fire
 
-  const filledOne = [1, 4];
+  const filledOne = [1, 4]; /// TESTING
+  // NEED like a point-A and point-B to test a*
+  // [0, 4] -> [3, 4], or visa versa
 
   boxStubs.forEach((_columnNum, idX) => {
     aStarArray[idX] = [];
