@@ -13,12 +13,16 @@ export const prepGridData = ({
 
   // ^ box-stubs?, kill w/fire
 
+  const filledOne = [1, 4];
+
   boxStubs.forEach((_columnNum, idX) => {
     aStarArray[idX] = [];
     gridData[idX] = [];
     //if (idX < 4) {
     boxStubs.forEach((_boxNumberByZero, idY) => {
-      aStarArray[idX].push(`a-${idX}-${idY}`);
+      aStarArray[idX].push(
+        JSON.stringify([idX, idY]) === JSON.stringify(filledOne) ? 0 : 1
+      ); //(`a-${idX}-${idY}`);
       // should be 0 or 1's.
 
       /** covers the length of the board ... 20, for 5 by 100 */
@@ -41,6 +45,7 @@ export const prepGridData = ({
         // can swap Z/Y for ratate of thing order generation
         yPosition: cubeTop, // cube, bottom
         zPosition: topPlane - cubeTop - columnModifier,
+        filled: !!(JSON.stringify([idX, idY]) === JSON.stringify(filledOne)),
       });
       //}
     });
