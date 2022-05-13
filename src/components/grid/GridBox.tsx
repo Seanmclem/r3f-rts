@@ -5,7 +5,7 @@ interface BoxyProps {
   columnModifier?: number;
 }
 
-export const Box = ({
+export const GridBox = ({
   boxSize,
   planeSize,
   positionModifier,
@@ -13,7 +13,8 @@ export const Box = ({
 }: BoxyProps) => (
   <mesh
     position={[
-      planeSize / 2 - boxSize / 2 + (0 ? 0 : -columnModifier), // x
+      // (planeSize / 2) ... gets position of top of plane, since plane-center is relative to overall-origin-center
+      planeSize / 2 - boxSize / 2 - columnModifier, // x
       boxSize / 2, // Y (vertical)
       planeSize / 2 - positionModifier / 2, // z (depth)
     ]}

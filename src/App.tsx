@@ -27,8 +27,8 @@ import { DoubleSide, Object3D, Vector3 } from "three";
 // } from "./components/buildings/TownCenter";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { BottomHUD } from "./components/hud-container/BottomHUD";
-import { Box } from "./components/generic/Box";
-import { OneSide } from "./components/generic/OneSide";
+import { PlaneGrid } from "./components/grid/PlaneGrid";
+// import { OneSide } from "./components/generic/OneSide";
 
 declare global {
   namespace JSX {
@@ -107,65 +107,6 @@ const CameraControls = () => {
 };
 // const planeSize = 30;
 
-const MyGrid = ({
-  cubeSize,
-  planeSize,
-}: {
-  cubeSize: number;
-  planeSize: number;
-}) => {
-  // const cubeSize = 5;
-  const cubeNumber = planeSize / cubeSize;
-  const aStarArray: any[] = [];
-
-  const boxStubs = Array.from(Array(cubeNumber).keys());
-
-  console.log("RENDER");
-  console.log("boxStubs.length", boxStubs.length);
-
-  // TODO: move ^all v this grid making logic into external function, to run once
-  // move grid to ext-component
-  // move grid-data to zustand store, imported into component
-  // zustand store auto generates a-star grid also, from like empty/filled properties in grid model
-  // NEED: basic grid model/interface
-
-  const [rendering] = useState(
-    boxStubs.map((_columnNum, idX) =>
-      boxStubs.map((_boxNumberByZero, idY) => {
-        if (typeof aStarArray[idX]?.length === "number") {
-          aStarArray[idX].push(`a-${idX}-${idY}`);
-          // should be 0 or 1's.
-        } else {
-          aStarArray[idX] = [`b-${idX}-${idY}`];
-        }
-
-        console.log({ aStarArray });
-
-        /** covers the length of the board ... 20, for 5 by 100 */
-        const cubesPlaneLength = planeSize / cubeSize;
-        // console.log(cubesPlaneLength % idx);
-        const cubeNumber = idY + 1;
-
-        console.log({ idX, idY });
-
-        const oneMoreCubePosition = cubeSize * 2;
-
-        return true ? ( // idY < 3 && cubeNumber < 2
-          <Box
-            key={`${idX}${idY}`}
-            planeSize={planeSize}
-            boxSize={cubeSize}
-            positionModifier={oneMoreCubePosition * cubeNumber - cubeSize}
-            columnModifier={idX * cubeSize}
-          />
-        ) : null;
-      })
-    )
-  );
-
-  return <>{rendering}</>;
-};
-
 export const App = () => {
   const [planeSize, _setPlaneSize] = useState(30);
   const [gridSquareSize, _setGridSquareSize] = useState(5);
@@ -225,11 +166,9 @@ export const App = () => {
           Need a map function to go over the Buildings
         */}
 
-          {/* <OneSide planeSize={100} boxSize={5} /> */}
-
           {/*  (planeSize / cubeSize)  == covers the length of the board */}
 
-          <MyGrid cubeSize={gridSquareSize} planeSize={planeSize} />
+          <PlaneGrid cubeSize={gridSquareSize} planeSize={planeSize} />
           {/* Gone */}
 
           {/* x20 .... aka 100/5 = 20 */}
