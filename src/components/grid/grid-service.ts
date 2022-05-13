@@ -16,8 +16,8 @@ export const prepGridData = ({
   boxStubs.forEach((_columnNum, idX) => {
     aStarArray[idX] = [];
     gridData[idX] = [];
-
-    return boxStubs.forEach((_boxNumberByZero, idY) => {
+    //if (idX < 4) {
+    boxStubs.forEach((_boxNumberByZero, idY) => {
       aStarArray[idX].push(`a-${idX}-${idY}`);
       // should be 0 or 1's.
 
@@ -35,12 +35,16 @@ export const prepGridData = ({
 
       // TODO:  use imports of `grid-types` format eventually here
 
+      //if (idY < 4) {
       gridData[idX].push({
-        xPosition: topPlane - cubeTop - columnModifier,
+        xPosition: topPlane - positionModifier / 2,
+        // can swap Z/Y for ratate of thing order generation
         yPosition: cubeTop, // cube, bottom
-        zPosition: topPlane - positionModifier / 2,
+        zPosition: topPlane - cubeTop - columnModifier,
       });
+      //}
     });
+    //}
   });
 
   return { gridData, aStarArray };
