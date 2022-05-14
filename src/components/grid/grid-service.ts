@@ -1,3 +1,29 @@
+import { astar, Graph } from "javascript-astar";
+
+// console.log({ Aresult: result });
+
+const generatePath = ({
+  theGraph,
+  startX,
+  startY,
+  endX,
+  endY,
+}: {
+  theGraph: number[][];
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}) => {
+  const graph = new Graph(theGraph);
+  const start = graph.grid[startX][startY];
+  const end = graph.grid[endX][endY];
+
+  const result = astar.search(graph, start, end);
+
+  console.log({ "A--result": result });
+};
+
 export const prepGridData = ({
   cubeSize,
   planeSize,
@@ -53,6 +79,18 @@ export const prepGridData = ({
       //}
     });
     //}
+  });
+
+  // ...
+  // NEED like a point-A and point-B to test a*
+  // [0, 4] -> [3, 4], or visa versa
+
+  generatePath({
+    theGraph: aStarArray,
+    startX: 0,
+    startY: 4,
+    endX: 3,
+    endY: 4,
   });
 
   return { gridData, aStarArray };
