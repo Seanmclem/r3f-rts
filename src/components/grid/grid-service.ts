@@ -41,7 +41,7 @@ export const prepGridData = ({
 
   // ^ box-stubs?, kill w/fire
 
-  const filledOne = [2, 1]; /// TESTING ... 2,0 -> 2,3
+  const filledOne = [4, 2]; /// TESTING ... 2,0 -> 2,3
   // NEED like a point-A and point-B to test a*
   // [0, 4] -> [3, 4], or visa versa
 
@@ -52,7 +52,7 @@ export const prepGridData = ({
     //if (idY < 4) {
     boxStubs.forEach((_boxNumberByZero, idX) => {
       aStarArray[idY].push(
-        JSON.stringify([idY, idX]) === JSON.stringify(filledOne) ? 0 : 1
+        JSON.stringify([idX, idY]) === JSON.stringify(filledOne) ? 0 : 1
       ); //(`a-${idX}-${idY}`);
       // should be 0 or 1's.
 
@@ -76,7 +76,9 @@ export const prepGridData = ({
         xPosition: -topPlane + positionModifier / 2,
         // can swap Z/Y for ratate of thing order generation
         yPosition: cubeTop, // cube, bottom
-        zPosition: topPlane - (cubeTop + columnModifier),
+        zPosition: -topPlane + (cubeTop + columnModifier),
+        // zPosition: topPlane - (cubeTop + columnModifier),
+        // ^^ z starts from top, vs bottom, visa-versa
         filled: !!(JSON.stringify([idX, idY]) === JSON.stringify(filledOne)),
       });
       //}
