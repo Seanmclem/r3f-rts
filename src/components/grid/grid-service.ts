@@ -22,6 +22,8 @@ const generatePath = ({
   const result = astar.search(graph, start, end);
 
   console.log({ "A--result": result });
+
+  return result;
 };
 
 export const prepGridData = ({
@@ -85,7 +87,7 @@ export const prepGridData = ({
   // NEED like a point-A and point-B to test a*
   // [0, 4] -> [3, 4], or visa versa
 
-  generatePath({
+  const aStarPath = generatePath({
     theGraph: aStarArray,
     startX: 0,
     startY: 4,
@@ -93,5 +95,5 @@ export const prepGridData = ({
     endY: 4,
   });
 
-  return { gridData, aStarArray };
+  return { gridData, aStarArray, aStarPath };
 };

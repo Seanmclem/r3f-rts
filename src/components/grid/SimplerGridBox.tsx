@@ -2,7 +2,7 @@ interface BoxyProps {
   cubeSize: number;
 
   filled?: boolean;
-
+  pathBox?: boolean;
   xPos: number;
   yPos: number;
   zPos: number;
@@ -14,6 +14,7 @@ export const SimplerGridBox = ({
   yPos,
   zPos,
   filled,
+  pathBox,
 }: BoxyProps) => (
   <mesh
     position={[
@@ -24,6 +25,9 @@ export const SimplerGridBox = ({
     ]}
   >
     <boxGeometry args={[cubeSize, cubeSize, cubeSize]} />
-    <meshBasicMaterial color={"blue"} wireframe={!filled} />
+    <meshBasicMaterial
+      color={pathBox ? "yellow" : "blue"}
+      wireframe={!filled && !pathBox}
+    />
   </mesh>
 );
