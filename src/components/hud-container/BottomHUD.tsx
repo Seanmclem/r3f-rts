@@ -5,7 +5,7 @@ interface props {}
 
 export const BottomHUD: React.FC<props> = () => {
   const onlyWidth = useWindowWidth();
-
+  return null;
   return (
     <BottomHudContainer>
       <p>LALALALALALALALALAALALALLALALALAAL</p>
