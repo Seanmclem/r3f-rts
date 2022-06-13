@@ -2,18 +2,14 @@
 
 import { useEffect } from "react";
 import { useGameDataStore } from "../../stores/game-data-store";
-import { initializeGridData } from "./grid-service";
-import { GridBox } from "./grid-types";
 
 import { SimplerGridBox } from "./SimplerGridBox";
 
 export const PlaneGrid = ({
   cubeSize,
-  planeSize,
 }: //initialGridData,
 {
   cubeSize: number;
-  planeSize: number;
   //initialGridData?: GridBox[][];
 }) => {
   const gridData = useGameDataStore((state) => state.gridData);

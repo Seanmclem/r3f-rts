@@ -195,7 +195,7 @@ export const App = () => {
 
             {/*  (planeSize / cubeSize)  == covers the length of the board */}
 
-            <PlaneGrid cubeSize={cubeSize} planeSize={planeSize} />
+            <PlaneGrid cubeSize={cubeSize} />
 
             <Plane
               size={planeSize}
