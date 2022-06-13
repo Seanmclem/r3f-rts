@@ -28,6 +28,10 @@ import { DoubleSide, Object3D, Vector3 } from "three";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { BottomHUD } from "./components/hud-container/BottomHUD";
 import { PlaneGrid } from "./components/grid/PlaneGrid";
+import { useGameDataStore } from "./stores/game-data-store";
+import { Units } from "./components/units/Units";
+import { initializeGridData } from "./components/grid/grid-service";
+import { GridBox } from "./components/grid/grid-types";
 // import { OneSide } from "./components/generic/OneSide";
 
 declare global {
@@ -109,7 +113,29 @@ const CameraControls = () => {
 
 export const App = () => {
   const [planeSize, _setPlaneSize] = useState(30);
-  const [gridSquareSize, _setGridSquareSize] = useState(5);
+  const [cubeSize, _setCubeSize] = useState(5);
+
+  const loadedSavedData = useGameDataStore((state) => state.loadedSavedData);
+  const updateGeneric = useGameDataStore((state) => state.updateGeneric);
+  const updateGridData = useGameDataStore((state) => state.updateGridData);
+
+  useEffect(() => {
+    if (!loadedSavedData) {
+      // do loading ... check local storage
+      // updateGridData, if any loaded...
+
+      const loadedData: undefined | GridBox[][] = undefined;
+
+      if (loadedData) {
+        updateGridData(loadedData);
+      } else {
+        const data = initializeGridData({ cubeSize, planeSize });
+        updateGridData(data.gridData);
+        updateGeneric({ loadedSavedData: true });
+      }
+    }
+  }, []);
+
   // const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
   // const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
   // const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
@@ -129,57 +155,63 @@ export const App = () => {
   // };
   // console.log(geometry);
 
-  return (
-    <div className="canvas-container">
-      <Canvas
-        style={{ height: window.innerHeight, width: window.innerWidth }}
-        camera={{ fov: 75, position: [10, 8, 10] }}
-      >
-        <Physics>
-          <CameraControls />
-          <Stars />
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 15, 10]} color={"red"} />
-          <axesHelper args={[50]} />
-          {/* {hudRef && hudRef.current ? <HudBox ref={hudRef} /> : null} */}
-          {/* 
-          {buildings.map((building) => (
-            <TownCenterComponent
-              key={building.uid}
-              building={building}
-              selectedNodeUid={selectedNodeUid}
-              setSelectedNodeUid={setSelectedNodeUid}
+  if (loadedSavedData) {
+    return (
+      <div className="canvas-container">
+        <Canvas
+          style={{ height: window.innerHeight, width: window.innerWidth }}
+          camera={{ fov: 75, position: [10, 8, 10] }}
+        >
+          <Physics>
+            <CameraControls />
+            <Stars />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 15, 10]} color={"red"} />
+            <axesHelper args={[50]} />
+            {/* {hudRef && hudRef.current ? <HudBox ref={hudRef} /> : null} */}
+            {/* 
+            {buildings.map((building) => (
+              <TownCenterComponent
+                key={building.uid}
+                building={building}
+                selectedNodeUid={selectedNodeUid}
+                setSelectedNodeUid={setSelectedNodeUid}
+              />
+            ))}
+  
+            {villagers.map((villager) => (
+              <VillagerComponent
+                key={villager.uid}
+                villager={villager}
+                selectedNodeUid={selectedNodeUid}
+                setSelectedNodeUid={setSelectedNodeUid}
+                handleReachDestination={handleReachDestination}
+              />
+            ))} */}
+
+            {/* 
+            Need a map function to go over the Buildings
+          */}
+
+            {/*  (planeSize / cubeSize)  == covers the length of the board */}
+
+            <PlaneGrid cubeSize={cubeSize} planeSize={planeSize} />
+
+            <Plane
+              size={planeSize}
+              // setSelectedNodeUid={setSelectedNodeUid}
+              // handleInitiateMoving={handleInitiateMoving}
             />
-          ))}
 
-          {villagers.map((villager) => (
-            <VillagerComponent
-              key={villager.uid}
-              villager={villager}
-              selectedNodeUid={selectedNodeUid}
-              setSelectedNodeUid={setSelectedNodeUid}
-              handleReachDestination={handleReachDestination}
-            />
-          ))} */}
-
-          {/* 
-          Need a map function to go over the Buildings
-        */}
-
-          {/*  (planeSize / cubeSize)  == covers the length of the board */}
-
-          <PlaneGrid cubeSize={gridSquareSize} planeSize={planeSize} />
-
-          <Plane
-            size={planeSize}
-            // setSelectedNodeUid={setSelectedNodeUid}
-            // handleInitiateMoving={handleInitiateMoving}
-          />
-        </Physics>
-      </Canvas>
-      <BottomHUD />
-    </div>
-  );
+            <Units />
+          </Physics>
+        </Canvas>
+        <BottomHUD />
+      </div>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default App;
