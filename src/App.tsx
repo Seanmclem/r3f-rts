@@ -13,13 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { DoubleSide, Object3D, Vector3 } from "three";
 // import { VillagerProps } from "./components/villager/shared/types";
-// import {
-//   box1,
-//   box2,
-//   initiateMoving,
-//   reachDestination,
-//   VillagerComponent,
-// } from "./components/villager/Villager";
+
 // import { BuildingProps } from "./components/buildings/shared/types";
 // import {
 //   townCenter1,
@@ -32,6 +26,7 @@ import { useGameDataStore } from "./stores/game-data-store";
 import { Units } from "./components/units/Units";
 import { initializeGridData } from "./components/grid/grid-service";
 import { GridBox } from "./components/grid/grid-types";
+import { initializeUnitData } from "./components/units/units-service";
 // import { OneSide } from "./components/generic/OneSide";
 
 declare global {
@@ -48,9 +43,13 @@ declare global {
 extend({ OrbitControls });
 
 const Plane = ({ size }: { size: number }) => {
+  const updateSelectedNodeUid = useGameDataStore(
+    (state) => state.updateSelectedNodeUid
+  );
+
   const handleClick = (event: any) => {
     if (event.type === "click") {
-      // setSelectedNodeUid(undefined);
+      updateSelectedNodeUid(undefined);
     } else if (event.type === "contextmenu") {
       const destination: Vector3 = event.intersections[0].point;
       console.log({ destination });
@@ -115,9 +114,16 @@ export const App = () => {
   const [planeSize, _setPlaneSize] = useState(30);
   const [cubeSize, _setCubeSize] = useState(5);
 
-  const loadedSavedData = useGameDataStore((state) => state.loadedSavedData);
+  const loadedSavedData = useGameDataStore((state) => state.loadedSavedData); // Boolean
   const updateGeneric = useGameDataStore((state) => state.updateGeneric);
   const updateGridData = useGameDataStore((state) => state.updateGridData);
+
+  const units = useGameDataStore((state) => state.units);
+  const updateUnits = useGameDataStore((state) => state.updateUnits);
+
+  useEffect(() => {
+    console.log({ units });
+  }, [units]);
 
   useEffect(() => {
     if (!loadedSavedData) {
@@ -129,26 +135,17 @@ export const App = () => {
       if (loadedData) {
         updateGridData(loadedData);
       } else {
-        const data = initializeGridData({ cubeSize, planeSize });
-        updateGridData(data.gridData);
+        const initialialUnitData = initializeUnitData();
+        updateUnits(initialialUnitData.villagers);
+
+        const initialGriddata = initializeGridData({ cubeSize, planeSize });
+        updateGridData(initialGriddata.gridData);
         updateGeneric({ loadedSavedData: true });
       }
     }
   }, []);
 
   // const [buildings, setBuildings] = useState<BuildingProps[]>([townCenter1]);
-  // const [villagers, setVillagers] = useState<VillagerProps[]>([box1, box2]);
-  // const [selectedNodeUid, setSelectedNodeUid] = useState<string | undefined>();
-
-  // const handleInitiateMoving = (destinationPosition: Vector3) => {
-  //   selectedNodeUid &&
-  //     initiateMoving(
-  //       selectedNodeUid,
-  //       destinationPosition,
-  //       villagers,
-  //       setVillagers
-  //     );
-  // };
 
   // const handleReachDestination = (specificNodeUid: string) => {
   //   reachDestination(specificNodeUid, villagers, setVillagers);

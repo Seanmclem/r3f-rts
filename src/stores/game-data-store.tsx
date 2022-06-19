@@ -1,5 +1,6 @@
 import create, { SetState } from "zustand";
 import { GridBox } from "../components/grid/grid-types";
+import { Unit } from "../components/units/types";
 
 type GenericUpdatePayload = "loadedSavedData";
 
@@ -10,6 +11,12 @@ interface ISet {
 
   gridData: GridBox[][];
   updateGridData: (gridData: GridBox[][]) => void;
+
+  selectedNodeUid?: string;
+  updateSelectedNodeUid: (updatedSelectedNodeUid?: string) => void;
+
+  units: Unit[];
+  updateUnits: (updatedUnits: Unit[]) => void;
 }
 
 export const useGameDataStore = create<ISet>((set: SetState<ISet>) => ({
@@ -23,5 +30,17 @@ export const useGameDataStore = create<ISet>((set: SetState<ISet>) => ({
   updateGridData: (updatedTemplate: GridBox[][]) =>
     set((_state: ISet) => {
       return { gridData: updatedTemplate };
+    }),
+
+  selectedNodeUid: undefined,
+  updateSelectedNodeUid: (updatedSelectedNodeUid?: string) =>
+    set((_state: ISet) => {
+      return { selectedNodeUid: updatedSelectedNodeUid };
+    }),
+
+  units: [],
+  updateUnits: (updatedUnits: Unit[]) =>
+    set((_state: ISet) => {
+      return { units: updatedUnits };
     }),
 }));

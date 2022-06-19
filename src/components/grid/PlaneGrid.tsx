@@ -54,7 +54,7 @@ export const PlaneGrid = ({
               xPos={boxPositions.xPosition}
               yPos={boxPositions.yPosition}
               zPos={boxPositions.zPosition}
-              filled={boxPositions.filled}
+              // filled={boxPositions.filled}
               // pathBox={!!foundPathBlock}
             />
           );
