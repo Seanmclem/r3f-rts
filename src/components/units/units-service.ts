@@ -10,7 +10,7 @@ export const EmptyInventory: Inventory = {
 
 export const originalVillager1: Unit = {
   uid: "qwertyuiop",
-  currentPosition: new Vector3(9, 0, 0),
+  initialPosition: new Vector3(9, 0, 0),
   inventory: EmptyInventory,
   status: "IDLE",
   classType: "VILLAGER",
@@ -18,15 +18,14 @@ export const originalVillager1: Unit = {
 
 export const originalVillager2: Unit = {
   uid: "asdfghjkl",
-  currentPosition: new Vector3(1, 0, 0),
+  initialPosition: new Vector3(1, 0, 0),
   inventory: EmptyInventory,
   status: "IDLE",
   classType: "VILLAGER",
 };
 
 export const initializeUnitData = () => {
-  // this function can init the usnits, then pass to grid to init with those-there too
-  //have a units-store or use game-data store, for selected-unit
+  // this function can init the units, then pass to grid to init with those-there too?
 
   const villagers = [originalVillager1, originalVillager2];
 

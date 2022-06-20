@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useState } from "react";
-import { Vector3 } from "three";
 import { useBox } from "@react-three/cannon";
 import { Unit } from "../units/types";
 import { useGameDataStore } from "../../stores/game-data-store";
@@ -85,7 +84,7 @@ import { useGameDataStore } from "../../stores/game-data-store";
 
 export const VillagerComponent: React.VFC<Unit> = ({
   uid,
-  currentPosition: initialPosition,
+  initialPosition,
 }) => {
   const selectedNodeUid = useGameDataStore((state) => state.selectedNodeUid);
   const updateSelectedNodeUid = useGameDataStore(

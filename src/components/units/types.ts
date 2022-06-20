@@ -14,7 +14,7 @@ export interface Unit {
   status: "MOVING" | "IDLE";
   classType: "VILLAGER";
 
-  currentPosition: Vector3;
+  initialPosition: Vector3;
   // optional below
   destinationPosition?: Vector3;
 
