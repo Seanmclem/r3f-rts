@@ -15,9 +15,14 @@ interface ISet {
   selectedNodeUid?: string;
   updateSelectedNodeUid: (updatedSelectedNodeUid?: string) => void;
 
+  selectedNodeFunction?: GenericFn;
+  updateSelectedNodeFunction: (updatedSelectedNodeFunction?: GenericFn) => void;
+
   units: Unit[];
   updateUnits: (updatedUnits: Unit[]) => void;
 }
+
+type GenericFn = (...args: any[]) => void;
 
 export const useGameDataStore = create<ISet>((set: SetState<ISet>) => ({
   loadedSavedData: false,
@@ -36,6 +41,12 @@ export const useGameDataStore = create<ISet>((set: SetState<ISet>) => ({
   updateSelectedNodeUid: (updatedSelectedNodeUid?: string) =>
     set((_state: ISet) => {
       return { selectedNodeUid: updatedSelectedNodeUid };
+    }),
+
+  selectedNodeFunction: undefined,
+  updateSelectedNodeFunction: (updatedSelectedNodeFunction?: GenericFn) =>
+    set((_state: ISet) => {
+      return { selectedNodeFunction: updatedSelectedNodeFunction };
     }),
 
   units: [],

@@ -91,15 +91,26 @@ export const VillagerComponent: React.VFC<Unit> = ({
     (state) => state.updateSelectedNodeUid
   );
 
+  const updateSelectedNodeFunction = useGameDataStore(
+    (state) => state.updateSelectedNodeFunction
+  );
+
   // I'll still need to keep a global data updated
   const size = 2;
   const selected = uid === selectedNodeUid;
   const [currentPosition, setCurrentPosition] = useState(initialPosition);
 
+  const handleRightClick = (data: any) => {
+    console.log("MY DATA _ right click", data);
+  };
+
+  /** left-click, selection */
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     updateSelectedNodeUid(uid);
     console.log({ currentPosition });
+
+    updateSelectedNodeFunction(handleRightClick);
   };
 
   //   useFrame(() => {

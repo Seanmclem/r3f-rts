@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Canvas,
   extend,
@@ -37,19 +38,24 @@ declare global {
 extend({ OrbitControls });
 
 const Plane = ({ size }: { size: number }) => {
+  const selectedNodeFunction = useGameDataStore(
+    (state) => state.selectedNodeFunction
+  );
+
   const updateSelectedNodeUid = useGameDataStore(
     (state) => state.updateSelectedNodeUid
+  );
+  const updateSelectedNodeFunction = useGameDataStore(
+    (state) => state.updateSelectedNodeFunction
   );
 
   const handleClick = (event: any) => {
     if (event.type === "click") {
       updateSelectedNodeUid(undefined);
+      updateSelectedNodeFunction(undefined);
     } else if (event.type === "contextmenu") {
       const destination: Vector3 = event.intersections[0].point;
-      console.log({ destination });
-
-      // setPosition(destination);
-      // handleInitiateMoving(destination);
+      selectedNodeFunction?.({ destination });
     }
   };
 
