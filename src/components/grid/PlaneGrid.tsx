@@ -14,8 +14,9 @@ export const PlaneGrid = ({ cubeSize }: { cubeSize: number }) => {
             <SimplerGridBox
               key={`${idX}-${idY}`}
               cubeSize={cubeSize}
+              grid_coordinates={{ x: idX, y: idY }}
               xPos={boxPositions.xPosition}
-              yPos={boxPositions.yPosition}
+              yPos={boxPositions.yPosition} // global 3d positions, x,y,z
               zPos={boxPositions.zPosition}
             />
           );

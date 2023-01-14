@@ -1,6 +1,8 @@
+import { GridCoordinates } from "../units/types";
+
 interface BoxyProps {
   cubeSize: number;
-
+  grid_coordinates: GridCoordinates;
   filled?: boolean;
   pathBox?: boolean;
   xPos: number;
@@ -10,6 +12,7 @@ interface BoxyProps {
 
 export const SimplerGridBox = ({
   cubeSize,
+  grid_coordinates,
   xPos,
   yPos,
   zPos,
@@ -23,6 +26,11 @@ export const SimplerGridBox = ({
       yPos,
       zPos,
     ]}
+    // onContextMenu={(data) => {
+    //   console.log({ grid_coordinates, data });
+    //   console.log(grid_coordinates);
+    //   // data.point seems to be a global pos system?
+    // }}
   >
     <boxGeometry args={[cubeSize, cubeSize, cubeSize]} />
     <meshBasicMaterial

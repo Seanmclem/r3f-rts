@@ -47,10 +47,10 @@ export const VillagerComponent: React.VFC<Unit> = ({
 
   const [ref, api] = useBox(() => ({
     userData: uid,
-    // onCollide: () => {
-    //   api.rotation.set(0, 0, 0);
-    //   console.log("colliding!!!!");
-    //   api.velocity.set(0, 0, 0);
+    // onCollide: (e) => {
+    //   // api.rotation.set(0, 0, 0);
+    //   console.log("colliding!!!!", e);
+    //   // api.velocity.set(0, 0, 0);
     // },
     // onCollideBegin: (e) => {
     //   console.log(e);

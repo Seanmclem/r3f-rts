@@ -7,6 +7,8 @@ export interface Inventory {
   stone: number;
 }
 
+export type GridCoordinates = { x: number; y: number };
+
 /** Villager Interface */
 export interface Unit {
   uid: string;
@@ -17,7 +19,7 @@ export interface Unit {
   initialPosition: Vector3;
   // optional below
   destination_position?: Vector3;
-  destination_grid_square?: { x: number; y: number };
+  destination_grid_square?: GridCoordinates;
   //
 
   gridPath?: number[][] /** a-start path */;
