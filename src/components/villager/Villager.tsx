@@ -1,91 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useBox } from "@react-three/cannon";
 import { Unit } from "../units/types";
 import { useGameDataStore } from "../../stores/game-data-store";
-
-/* #region  comments  */
-
-// export const initiateMoving = (
-//   selectedNodeUid: string,
-//   destinationPosition: Vector3,
-//   villagers: VillagerProps[],
-//   setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
-// ) => {
-//   const existingVillager = villagers.find(
-//     (villager) => villager.uid === selectedNodeUid
-//   );
-//   const otherVillagers = villagers.filter(
-//     (villager) => villager.uid !== selectedNodeUid
-//   );
-//   if (existingVillager) {
-//     const updatedVillager: VillagerProps = {
-//       ...existingVillager,
-//       destinationPosition,
-//       status: "moving",
-//     };
-//     setVillagers([...otherVillagers, updatedVillager]);
-//   }
-// };
-
-// export const reachDestination = (
-//   specificNodeUid: string,
-//   villagers: VillagerProps[],
-//   setVillagers: React.Dispatch<React.SetStateAction<VillagerProps[]>>
-// ) => {
-//   const existingVillager = villagers.find(
-//     (villager) => villager.uid === specificNodeUid
-//   );
-//   const otherVillagers = villagers.filter(
-//     (villager) => villager.uid !== specificNodeUid
-//   );
-//   if (existingVillager) {
-//     const updatedVillager: VillagerProps = {
-//       ...existingVillager,
-//       destinationPosition: undefined,
-//       status: "standing",
-//     };
-//     setVillagers([...otherVillagers, updatedVillager]);
-//   }
-// };
-
-// const destinationMatch = (destination: Vector3, current: Vector3) => {
-//   // const xMatch = formatLimitDecimals(destination.x, 1) === formatLimitDecimals(current.x, 1);
-//   // const zMatch = formatLimitDecimals(destination.z, 1) === formatLimitDecimals(current.z, 1);
-//   const xMatch = destination.x.toFixed(0) === current.x.toFixed(0);
-//   const zMatch = destination.z.toFixed(0) === current.z.toFixed(0);
-
-//   debugger;
-//   return xMatch && zMatch;
-// };
-
-// export const box1: VillagerData = {
-//   uid: "qwertyuiop",
-//   initialPosition: new Vector3(9, 0, 0),
-//   inventory: EmptyInventory,
-//   status: "standing",
-// };
-
-// export const box2: VillagerData = {
-//   uid: "asdfghjkl",
-//   initialPosition: new Vector3(1, 0, 0),
-//   inventory: EmptyInventory,
-//   status: "standing",
-// };
-
-// interface VillagerComponentProps {
-//   villager: VillagerData;
-//   setSelectedNodeUid: React.Dispatch<React.SetStateAction<string | undefined>>;
-//   selectedNodeUid?: string;
-//   handleReachDestination: (specificNodeUid: string) => void;
-// }
-/* #endregion */
+import { Vector3 } from "three";
 
 export const VillagerComponent: React.VFC<Unit> = ({
   uid,
   initialPosition,
 }) => {
+  // I'll still need to keep a global data updated?
+  const size = 2;
+
   const selectedNodeUid = useGameDataStore((state) => state.selectedNodeUid);
   const updateSelectedNodeUid = useGameDataStore(
     (state) => state.updateSelectedNodeUid
@@ -95,49 +22,28 @@ export const VillagerComponent: React.VFC<Unit> = ({
     (state) => state.updateSelectedNodeFunction
   );
 
-  // I'll still need to keep a global data updated
-  const size = 2;
   const selected = uid === selectedNodeUid;
-  const [currentPosition, setCurrentPosition] = useState(initialPosition);
+  const constant_Y = size / 2 + 0.0001;
 
   const handleRightClick = (data: any) => {
-    console.log("MY DATA _ right click", data);
+    // console.log("MY DATA _ right click", data.destination);
+
+    // register a destination in a store, for this uid
+    // global plane destination, and specific grid square...
+    // is global position even needed? The grid square(s can handle everything)
+
+    api.position.set(data.destination.x, constant_Y, data.destination.z);
   };
 
   /** left-click, selection */
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     updateSelectedNodeUid(uid);
-    console.log({ currentPosition });
 
     updateSelectedNodeFunction(handleRightClick);
   };
 
-  //   useFrame(() => {
-  //     if (villager.destinationPosition) {
-  //       //do moving, updating
-  //       //setCurrentPosition(villager.destinationPosition); // REFINE HERE
-
-  //       const zDiff = villager.destinationPosition.z - currentPosition.z;
-  //       const zChange = zDiff > 0 ? 0.1 : -0.1;
-
-  //       const xDiff = villager.destinationPosition.x - currentPosition.x;
-  //       const xChange = xDiff > 0 ? 0.1 : -0.1;
-
-  //       setCurrentPosition({
-  //         x: currentPosition.x + xChange, //currentPosition.x + 0.1,
-  //         y: villager.destinationPosition.y, // unused
-  //         z: currentPosition.z + zChange,
-  //       } as Vector3); // y=height, ignored, only sets x, and z
-  //       api.position.set(currentPosition.x, size / 2 + 0.0001, currentPosition.z);
-
-  //       if (destinationMatch(villager.destinationPosition, currentPosition)) {
-  //         console.log("Destination reached!");
-  //         handleReachDestination(villager.uid);
-  //       }
-  //     }
-  //     // setCurrentPosition()
-  //   });
+  const [destination, set_destination] = useState(undefined);
 
   const [ref, api] = useBox(() => ({
     userData: uid,
@@ -163,10 +69,9 @@ export const VillagerComponent: React.VFC<Unit> = ({
     // },
     mass: 1,
     type: "Kinematic",
-    position: [currentPosition.x, size / 2 + 0.0001, currentPosition.z],
+    position: [initialPosition.x, constant_Y, initialPosition.z],
     args: [size, size, size],
   }));
-  // console.log({ x: currentPosition.x, z: currentPosition.z });
 
   return (
     <mesh ref={ref} onClick={handleClick}>

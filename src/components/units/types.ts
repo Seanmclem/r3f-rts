@@ -16,7 +16,9 @@ export interface Unit {
 
   initialPosition: Vector3;
   // optional below
-  destinationPosition?: Vector3;
+  destination_position?: Vector3;
+  destination_grid_square?: { x: number; y: number };
+  //
 
   gridPath?: number[][] /** a-start path */;
   blockCentersPath?: number[][] /** center-coordinates after each turn... only when angle changes */;

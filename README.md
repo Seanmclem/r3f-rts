@@ -6,6 +6,9 @@ Idk. It might be an RTS one day. Built with React Three Fiber
 
 - [x] Teleporting worker
 - [x] better camera
+- [ ] implement a way for a villager to check/update grid-data ... via `useGameDataStore > gridData`
+- [ ] NEW Above
+- [ ] OLD Below
 - [ ] Worker management
   - [ ] Add buildings
     - [ ] "Collide" with buildings ... needs useBox for collision

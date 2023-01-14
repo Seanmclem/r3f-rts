@@ -173,9 +173,7 @@ export const App = () => {
             <axesHelper args={[50]} />
 
             <PlaneGrid cubeSize={cubeSize} />
-
             <Plane size={planeSize} />
-
             <Units />
           </Physics>
         </Canvas>
