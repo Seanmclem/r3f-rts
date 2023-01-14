@@ -7,6 +7,7 @@ export const EmptyInventory: Inventory = {
   gold: 0,
   stone: 0,
 };
+// ^^ this should more be like, when creating a new unit, eventually
 
 export const originalVillager1: Unit = {
   uid: "qwertyuiop",

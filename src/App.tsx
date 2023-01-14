@@ -49,11 +49,14 @@ const Plane = ({ size }: { size: number }) => {
     (state) => state.updateSelectedNodeFunction
   );
 
+  /** Handles left and right clcik */
   const handleClick = (event: any) => {
     if (event.type === "click") {
+      // LEFT click
       updateSelectedNodeUid(undefined);
       updateSelectedNodeFunction(undefined);
     } else if (event.type === "contextmenu") {
+      // Right click
       const destination: Vector3 = event.intersections[0].point;
       selectedNodeFunction?.({ destination });
     }
@@ -115,8 +118,12 @@ export const App = () => {
   const [planeSize, _setPlaneSize] = useState(30);
   const [cubeSize, _setCubeSize] = useState(5);
 
+  /**  */
   const loadedSavedData = useGameDataStore((state) => state.loadedSavedData); // Boolean
-  const updateGeneric = useGameDataStore((state) => state.updateGeneric);
+
+  const update_loadedSavedData = useGameDataStore(
+    (state) => state.update_loadedSavedData
+  );
   const updateGridData = useGameDataStore((state) => state.updateGridData);
 
   const units = useGameDataStore((state) => state.units);
@@ -128,22 +135,27 @@ export const App = () => {
 
   useEffect(() => {
     if (!loadedSavedData) {
-      // do loading ... check local storage
-      // updateGridData, if any loaded...
-
       const loadedData: undefined | GridBox[][] = undefined;
+      // ^^ for if -potentially loaded from save-data
 
       if (loadedData) {
         updateGridData(loadedData);
+        // ^^ for if -potentially loaded from save-data
+        // not implemented yet
       } else {
+        // gets from static array. Function could also load from local storage or something.. not yet
         const initialialUnitData = initializeUnitData();
         updateUnits(initialialUnitData.villagers);
 
+        //  Should be hooks? ^v
+
+        // Get initial grid data. for first-load
         const initialGriddata = initializeGridData({ cubeSize, planeSize });
         updateGridData(initialGriddata.gridData);
-        updateGeneric({ loadedSavedData: true });
+        update_loadedSavedData(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loadedSavedData) {
